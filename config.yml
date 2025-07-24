@@ -3,3 +3,9 @@ git:
     colorArg: always
     pager: delta --dark --paging=never
     externalDiffCommand: difft
+os:
+  open: alacritty -e nvim {{filename}}
+  edit: nvim {{filename}}
+  editAtLine: nvim {{filename}} +{{line}}
+  editAtLineAndWait: nvim {{filename}} +{{line}}
+  editInTerminal: true
