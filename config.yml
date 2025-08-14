@@ -1,3 +1,10 @@
+gui:
+  language: en
+  theme:
+    selectedLineBgColor:
+      - '#4b4873'
+    selectedRangeBgColor:
+      - '#4b4873'
 git:
   paging:
     colorArg: always
