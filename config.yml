@@ -6,6 +6,7 @@ gui:
     selectedRangeBgColor:
       - '#4b4873'
 git:
+  useHunkModeInStagingView: false
   paging:
     colorArg: always
     pager: delta --dark --paging=never
