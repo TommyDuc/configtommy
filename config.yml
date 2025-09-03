@@ -9,6 +9,7 @@ git:
   truncateCopiedCommitHashesTo: 40
   localBranchSortOrder: "date"
   remoteBranchSortOrder: "date"
+  diffContextSize: 5
   useHunkModeInStagingView: false
   paging:
     colorArg: always
