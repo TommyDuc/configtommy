@@ -6,6 +6,7 @@ gui:
     selectedRangeBgColor:
       - '#4b4873'
 git:
+  truncateCopiedCommitHashesTo: 40
   useHunkModeInStagingView: false
   paging:
     colorArg: always
