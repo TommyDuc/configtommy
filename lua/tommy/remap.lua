@@ -2,20 +2,32 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, {desc='Open netrw'})
 vim.keymap.set({'n', 'x'}, '<leader>py', '"+y', {desc = 'Copy to clipboard'})
 vim.keymap.set({'n', 'x'}, '<leader>pp', '"+p', {desc = 'Paste clipboard text'})
+
+local launch_cwd = vim.fn.getcwd() -- Captured once at startup
+
+local function display_path()
+    local abspath = vim.fn.expand('%:p')
+    local root = launch_cwd:gsub('/$', '')
+    if abspath:sub(1, #root + 1) == root .. '/' then
+        return './' .. abspath:sub(#root + 2)
+    end
+    return abspath
+end
+
 vim.keymap.set({"n", "x"}, "<leader>pf", function()
-    local path = vim.fn.expand('%:p')
+    local path = display_path()
     vim.fn.setreg('+', path)
     vim.notify('Copied: ' .. path, vim.log.levels.INFO)
 end, {desc = 'Yank file path to clipboard'})
 vim.keymap.set("n", "<leader>pF", function()
-    local path = vim.fn.expand('%:p')
+    local path = display_path()
     local line = vim.fn.line('.')
     local location = path .. ':' .. line
     vim.fn.setreg('+', location)
     vim.notify('Copied: ' .. location, vim.log.levels.INFO)
 end, {desc = 'Yank file path:line to clipboard'})
 vim.keymap.set("x", "<leader>pF", function()
-    local path = vim.fn.expand('%:p')
+    local path = display_path()
     local line1 = vim.fn.line('v')
     local line2 = vim.fn.line('.')
     -- Ensure line1 is always the smaller number
