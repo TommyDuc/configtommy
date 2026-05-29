@@ -1,6 +1,6 @@
 {
   "catppuccin": { "branch": "main", "commit": "1bf070129c0b6f77cc23f6a2212dcdc868308c52" },
-  "coc.nvim": { "branch": "release", "commit": "aba2fdaa467e61abd319a898a6ffa47740493695" },
+  "coc.nvim": { "branch": "release", "commit": "f4c17a8c90ef410b1624c4fa62c36fef6ede9ec8" },
   "coerce.nvim": { "branch": "main", "commit": "b7927c42bd7f3adaae5f5dcf86a89140d5d80430" },
   "coop.nvim": { "branch": "main", "commit": "b156e541316aee14be4ae64c93ed8bddb6d03bc1" },
   "fff.nvim": { "branch": "main", "commit": "19ca421550782066660d941dd11e7e8e853dcb19" },
