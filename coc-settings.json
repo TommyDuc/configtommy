@@ -104,6 +104,9 @@
 		"coc.preferences.formatOnSave": true,
 		"coc.preferences.formatOnType": true
 	},
+	"[proto]": {
+		"coc.preferences.formatOnSave": true
+	},
 	"markdownlint.config": {
 		"default": true,
 		"MD013": false
@@ -111,6 +114,15 @@
 
  "nix.enableLanguageServer": true,
  "nix.serverPath": "nixd",
+  "languageserver": {
+    "bufls": {
+      "command": "buf",
+      "args": ["beta", "lsp"],
+      "filetypes": ["proto"],
+      "rootPatterns": ["buf.yaml", "buf.work.yaml", ".git"],
+      "trace.server": "off"
+    }
+  },
   "cSpell.enabledLanguageIds": [
     "asciidoc",
     "c",
@@ -135,6 +147,7 @@
     "markdown",
     "php",
     "plaintext",
+    "proto",
     "pug",
     "python",
     "restructuredtext",
