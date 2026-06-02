@@ -19,6 +19,8 @@
     // "diagnostic.enable": false,
     // "pullDiagnostic.onChange": false,
     // "signature.enable": false,
+    "signature.preferShownAbove": true,
+    "signature.hideOnTextChange": true,
 
     "inlayHint.enable": true,
 	"inlayHint.display": false,
