@@ -7,6 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Update this if new folder are added.
 CONFIGS=(
     alacritty
+    atuin
     lazygit
     nvim
     zellij
