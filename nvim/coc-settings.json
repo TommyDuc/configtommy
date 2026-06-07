@@ -1,0 +1,166 @@
+{
+	"cSpellExt.enableDictionaries": [
+		"fr",
+		"en,ca"
+	],
+	"cSpell.userWords": [
+		"cégep",
+		"Duchesne",
+		"neovim",
+		"pyright",
+		"struct",
+		"Tommy",
+		"venv"
+	],
+	"cSpell.allowCompoundWords": true,
+
+	"json.schemaDownload.enable": true,
+
+    // "diagnostic.enable": false,
+    // "pullDiagnostic.onChange": false,
+    // "signature.enable": false,
+    "signature.preferShownAbove": true,
+    "signature.hideOnTextChange": true,
+
+    "inlayHint.enable": true,
+	"inlayHint.display": false,
+	"inlayHint.refreshOnInsertMode": false,
+	"inlayHint.position": "inline",
+
+	"diagnostic.enable": true,
+	"diagnostic.refreshOnInsertMode": false,
+	"diagnostic.virtualText": true,
+	"diagnostic.virtualTextCurrentLineOnly": false,
+	"diagnostic.virtualTextAlign": "below",
+	"diagnostic.virtualTextLimitInOneLine": 1,
+	"diagnostic.enableMessage": "jump",
+	"diagnostic.virtualTextLines": 2,
+
+	// This setting is what made me use neovim. Praise be the anti-popup Omnissiah!
+    "suggest.autoTrigger": "none",
+	"coc.preferences.bracketEnterImprove": true,
+	"suggest.noselect": false,
+	"suggest.floatConfig": {
+		"border": true,
+		"rounded": false
+	},
+	"suggest.pumFloatConfig":{
+		"border": true,
+		"rounded": false
+	},
+	"suggest.formatItems": [
+		"kind",
+		"abbr",
+		"menu"
+	],
+	"suggest.removeDuplicateItems": true,
+	"suggest.localityBonus": true,
+	"suggest.selection": "recentlyUsed",
+	"suggest.virtualText": true,
+	"suggest.completionItemKindLabels": {
+	  "text": "s",
+	  "method": "m",
+	  "function": "f",
+	  "constructor": "c",
+	  "field": "m",
+	  "variable": "V",
+	  "class": "C",
+	  "interface": "I",
+	  "module": "P",
+	  "property": "M",
+	  "unit": "U",
+	  "value": "v",
+	  "enum": "E",
+	  "keyword": "l",
+	  "snippet": "S",
+	  "color": "v",
+	  "file": "F",
+	  "reference": "r",
+	  "folder": "D",
+	  "enumMember": "e",
+	  "constant": "C",
+	  "struct": "S",
+	  "event": "E",
+	  "operator": "O",
+	  "typeParameter": "T",
+	  "default": "*"
+	},
+
+	"python.analysis.diagnosticMode": "workspace",
+	"python.linting.ruffEnabled": true,
+	"pyright.organizeimports.provider": "ruff",
+	"pyright.testing.provider": "pytest",
+	"python.venvPath": "${cwd}",
+	"[python]":{
+		"coc.preferences.formatOnSave": true,
+		"coc.preferences.formatOnType": true,
+		"suggest.ignoreRegexps": ["True", "False"]
+	},
+    "[typescript]": {
+        "coc.preferences.formatOnSave": true,
+        "typescript.autoClosingTags": true,
+        "typescript.suggest.autoImports": true,
+        "typescript.suggest.completeFunctionCalls": true
+    },
+	"[lua]": {
+		"coc.preferences.formatOnSave": true,
+		"coc.preferences.formatOnType": true
+	},
+	"[proto]": {
+		"coc.preferences.formatOnSave": true
+	},
+	"markdownlint.config": {
+		"default": true,
+		"MD013": false
+  },
+
+ "nix.enableLanguageServer": true,
+ "nix.serverPath": "nixd",
+  "languageserver": {
+    "bufls": {
+      "command": "buf",
+      "args": ["beta", "lsp"],
+      "filetypes": ["proto"],
+      "rootPatterns": ["buf.yaml", "buf.work.yaml", ".git"],
+      "trace.server": "off"
+    }
+  },
+  "cSpell.enabledLanguageIds": [
+    "asciidoc",
+    "c",
+    "cpp",
+    "csharp",
+    "css",
+    "fr",
+    "git-commit",
+    "gitcommit",
+    "go",
+    "handlebars",
+    "haskell",
+    "html",
+    "jade",
+    "java",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "latex",
+    "less",
+    "markdown",
+    "php",
+    "plaintext",
+    "proto",
+    "pug",
+    "python",
+    "restructuredtext",
+    "rust",
+    "scala",
+    "scss",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "vim",
+    "yaml",
+    "yml"
+  ]
+}
