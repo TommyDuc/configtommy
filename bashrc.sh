@@ -40,8 +40,6 @@ alias dag="git dag --all &" # GUI display of the dag from git-cola
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
 
-source /home/tommy/.config/broot/launcher/bash/br
-
 # nix
 alias nix_dev='nix develop --extra-experimental-features nix-command --extra-experimental-features flakes'
 
