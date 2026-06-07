@@ -1,0 +1,25 @@
+gui:
+  language: en
+  theme:
+    selectedLineBgColor:
+      - '#4b4873'
+    selectedRangeBgColor:
+      - '#4b4873'
+git:
+  truncateCopiedCommitHashesTo: 40
+  localBranchSortOrder: "date"
+  remoteBranchSortOrder: "date"
+  diffContextSize: 5
+  useHunkModeInStagingView: false
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+    externalDiffCommand: difft
+refresher:
+  refreshInterval: 2
+os:
+  open: alacritty -e nvim {{filename}}
+  edit: nvim {{filename}}
+  editAtLine: nvim {{filename}} +{{line}}
+  editAtLineAndWait: nvim {{filename}} +{{line}}
+  editInTerminal: true
