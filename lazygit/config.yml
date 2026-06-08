@@ -11,12 +11,12 @@ git:
   remoteBranchSortOrder: "date"
   diffContextSize: 5
   useHunkModeInStagingView: false
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
-    externalDiffCommand: difft
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+      externalDiffCommand: difft
 refresher:
-  refreshInterval: 2
+  refreshInterval: 10
 os:
   open: alacritty -e nvim {{filename}}
   edit: nvim {{filename}}
