@@ -16,7 +16,7 @@ CONFIGS=(
 DEST="${1:-$HOME/.config}"
 
 if [[ -n "${1:-}" && ! -d "$DEST" ]]; then
-    echo "Error: '$DEST' is not a valid directory." >&2
+    echo "Warning: '$DEST' is not a valid directory." >&2
     exit 1
 fi
 
@@ -31,9 +31,11 @@ done
 for cfg in "${CONFIGS[@]}"; do
     target="$DEST/$cfg"
     if [[ -e "$target" || -L "$target" ]]; then
-        echo "Error: '$target' already exists. Aborting." >&2
-        exit 1
+        echo "Warning: '$target' already exists. Skipping." >&2
+        continue
     fi
+    ln -s "$SCRIPT_DIR/$cfg" "$target"
+    echo "Linked $target -> $SCRIPT_DIR/$cfg"
 done
 
 SKILLS_DEST="$HOME/.agents/skills"
@@ -49,7 +51,4 @@ for src in "$SCRIPT_DIR"/skills/*/; do
     fi
     ln -s "${src%/}" "$target"
     echo "Linked $target -> ${src%/}"
-for cfg in "${CONFIGS[@]}"; do
-    ln -s "$SCRIPT_DIR/$cfg" "$DEST/$cfg"
-    echo "Linked $DEST/$cfg -> $SCRIPT_DIR/$cfg"
 done
