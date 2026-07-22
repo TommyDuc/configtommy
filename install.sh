@@ -36,6 +36,19 @@ for cfg in "${CONFIGS[@]}"; do
     fi
 done
 
+SKILLS_DEST="$HOME/.agents/skills"
+mkdir -p "$SKILLS_DEST"
+
+for src in "$SCRIPT_DIR"/skills/*/; do
+    [[ -d "$src" ]] || continue
+    skill="$(basename "$src")"
+    target="$SKILLS_DEST/$skill"
+    if [[ -e "$target" || -L "$target" ]]; then
+        echo "Warning: '$target' already exists. Skipping." >&2
+        continue
+    fi
+    ln -s "${src%/}" "$target"
+    echo "Linked $target -> ${src%/}"
 for cfg in "${CONFIGS[@]}"; do
     ln -s "$SCRIPT_DIR/$cfg" "$DEST/$cfg"
     echo "Linked $DEST/$cfg -> $SCRIPT_DIR/$cfg"
