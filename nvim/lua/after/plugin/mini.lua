@@ -106,3 +106,9 @@ require('mini.surround').setup({
 vim.keymap.set('n', 's', '<Nop>') -- Avoid the delay caused by the ambiguity of 's' or 'cl'
 
 require('mini.bufremove').setup()
+vim.keymap.set('n', '<leader>bd', function()
+  require('mini.bufremove').delete(0, false)
+end, { desc = 'Delete buffer (keep window)' })
+vim.keymap.set('n', '<leader>bD', function()
+  require('mini.bufremove').delete(0, true) -- force, discard unsaved
+end, { desc = 'Force delete buffer (keep window)' })
