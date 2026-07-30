@@ -75,6 +75,10 @@ vim.api.nvim_create_autocmd("CursorHold", {
 -- Symbol renaming
 keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
 
+-- File renaming (updates imports/references via LSP workspace edits)
+keyset("n", "<leader>rf", "<Cmd>CocCommand workspace.renameCurrentFile<CR>",
+       { silent = false, desc = "Rename current file" })
+
 
 -- Formatting selected code
 -- keyset("x", "<leader>f", "<Plug>(coc-format-selected)", {silent = true})
