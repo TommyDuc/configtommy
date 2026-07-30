@@ -73,7 +73,52 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 
 -- Symbol renaming
-keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
+-- Coc's rename prompt normally opens in insert mode with the cursor at the end
+-- (see coc#dialog#_create_prompt_nvim). We want it in normal mode with the
+-- cursor at the start of the symbol instead. The prompt window is shared with
+-- CocList (where insert-mode filtering is wanted), so scope this to rename only.
+local pending_rename = false
+
+keyset("n", "<leader>rn", function()
+    pending_rename = true
+    -- Safety net: clear the flag if no prompt shows up (e.g. invalid position).
+    vim.defer_fn(function() pending_rename = false end, 2000)
+    vim.api.nvim_feedkeys(
+        vim.api.nvim_replace_termcodes("<Plug>(coc-rename)", true, false, true), "m", false)
+end, {silent = true, desc = "Rename symbol"})
+
+vim.api.nvim_create_autocmd("User", {
+    group = "CocGroup",
+    pattern = "CocOpenFloatPrompt",
+    desc = "Start coc rename prompt in normal mode at start of symbol",
+    callback = function()
+        if not pending_rename then return end
+        pending_rename = false
+
+        local winid = vim.fn['coc#dialog#get_prompt_win']()
+        if winid == nil or winid == -1 then return end
+        local bufnr = vim.api.nvim_win_get_buf(winid)
+
+        -- <CR> only accepts from insert mode by default; add a normal-mode one.
+        keyset("n", "<CR>", "<Cmd>call coc#dialog#prompt_insert()<CR>",
+               {buffer = bufnr, silent = true, nowait = true})
+
+        -- Coc queues `feedkeys('A', 'int')` before firing this autocmd, so wait
+        -- for the insert to actually happen before backing out of it.
+        vim.api.nvim_create_autocmd("InsertEnter", {
+            group = "CocGroup",
+            buffer = bufnr,
+            once = true,
+            callback = function()
+                vim.schedule(function()
+                    if not vim.api.nvim_win_is_valid(winid) then return end
+                    vim.cmd("stopinsert")
+                    pcall(vim.api.nvim_win_set_cursor, winid, {1, 0})
+                end)
+            end,
+        })
+    end,
+})
 
 -- File renaming (updates imports/references via LSP workspace edits)
 keyset("n", "<leader>rf", "<Cmd>CocCommand workspace.renameCurrentFile<CR>",
