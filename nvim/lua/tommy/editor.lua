@@ -15,4 +15,6 @@ vim.opt.wrap = true
 vim.opt.signcolumn = "yes"
 vim.opt.scrolloff = 17
 vim.opt.timeoutlen = 4000
+vim.opt.splitbelow = true -- cursor on new buffer
+vim.opt.splitright = true -- cursor on new buffer
 vim.filetype.add({extension = {json="jsonc"}})
