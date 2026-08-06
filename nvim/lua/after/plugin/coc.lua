@@ -203,7 +203,7 @@ vim.api.nvim_create_user_command("OR", "call CocActionAsync('runCommand', 'edito
 -- Add (Neo)Vim's native statusline support
 -- NOTE: Please see `:h coc-status` for integrations with external plugins that
 -- provide custom statusline: lightline.vim, vim-airline
-vim.opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}")
+vim.opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}%{v:lua.coc_diag_status()}")
 
 -- Mappings for CoCList
 -- code actions and coc stuff
@@ -240,14 +240,37 @@ keyset("x", "<leader>hc", "<Cmd>CocCommand document.showIncomingCalls<CR>", opts
 -- Toggle diagnostics (signs, underline and virtual text all at once).
 -- NOTE: the global and the buffer toggle are independent in coc: if diagnostics
 -- are globally off, <leader>hq will not bring them back for the current buffer.
--- The notifications below make the current state visible.
+-- The notification and the statusline marker below make the current state visible.
+-- NOTE: coc exposes no way to query whether diagnostics are currently enabled,
+-- so the state below is mirrored rather than read back. It can drift if
+-- diagnostics get toggled through some other path; toggling twice resyncs it.
 local diag_global_on = true
 local diag_buffer_on = {}
+
+-- Statusline marker, shown just left of the file name while diagnostics are off.
+-- Inside a `%{}` expression Vim evaluates with the drawn window's buffer as the
+-- current one, so per-buffer state resolves correctly in every split.
+-- When diagnostics are off globally the marker gets a globe prefix; that case
+-- wins over the per-buffer one, since the globe already means "off everywhere".
+local DIAG_OFF_MARKER = "\u{F0209} " -- Nerd Font nf-md-eye_off
+local DIAG_GLOBAL_MARKER = "\u{F059F}" -- Nerd Font nf-md-web
+
+function _G.coc_diag_status()
+    if not diag_global_on then
+        return DIAG_GLOBAL_MARKER .. DIAG_OFF_MARKER
+    end
+    local bufnr = vim.api.nvim_get_current_buf()
+    if diag_buffer_on[bufnr] == false then
+        return DIAG_OFF_MARKER
+    end
+    return ""
+end
 
 local function diag_toggle_global()
     diag_global_on = not diag_global_on
     vim.fn.CocActionAsync("diagnosticToggle")
     vim.notify("diagnostics (all buffers): " .. (diag_global_on and "on" or "off"))
+    vim.cmd("redrawstatus!")
 end
 
 local function diag_toggle_buffer()
@@ -257,7 +280,14 @@ local function diag_toggle_buffer()
     diag_buffer_on[bufnr] = not on
     vim.fn.CocActionAsync("diagnosticToggleBuffer")
     vim.notify("diagnostics (this buffer): " .. (diag_buffer_on[bufnr] and "on" or "off"))
+    vim.cmd("redrawstatus!")
 end
+
+vim.api.nvim_create_autocmd("BufDelete", {
+    group = "CocGroup",
+    desc = "Forget per-buffer diagnostic toggle state",
+    callback = function(args) diag_buffer_on[args.buf] = nil end,
+})
 
 keyset("n", "<leader>ha", diag_toggle_global,
        {silent = true, nowait = true, desc = "Toggle diagnostics (all buffers)"})
