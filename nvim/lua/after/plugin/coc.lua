@@ -236,3 +236,36 @@ keyset("x", "<leader>ho", "<Cmd>CocCommand document.showOutgoingCalls<CR>", opts
 keyset("n", "<leader>hc", "<Cmd>CocCommand document.showIncomingCalls<CR>", opts)
 keyset("x", "<leader>hc", "<Cmd>CocCommand document.showIncomingCalls<CR>", opts)
 
+
+-- Toggle diagnostics (signs, underline and virtual text all at once).
+-- NOTE: the global and the buffer toggle are independent in coc: if diagnostics
+-- are globally off, <leader>hq will not bring them back for the current buffer.
+-- The notifications below make the current state visible.
+local diag_global_on = true
+local diag_buffer_on = {}
+
+local function diag_toggle_global()
+    diag_global_on = not diag_global_on
+    vim.fn.CocActionAsync("diagnosticToggle")
+    vim.notify("diagnostics (all buffers): " .. (diag_global_on and "on" or "off"))
+end
+
+local function diag_toggle_buffer()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local on = diag_buffer_on[bufnr]
+    if on == nil then on = true end
+    diag_buffer_on[bufnr] = not on
+    vim.fn.CocActionAsync("diagnosticToggleBuffer")
+    vim.notify("diagnostics (this buffer): " .. (diag_buffer_on[bufnr] and "on" or "off"))
+end
+
+keyset("n", "<leader>ha", diag_toggle_global,
+       {silent = true, nowait = true, desc = "Toggle diagnostics (all buffers)"})
+keyset("x", "<leader>ha", diag_toggle_global,
+       {silent = true, nowait = true, desc = "Toggle diagnostics (all buffers)"})
+
+keyset("n", "<leader>hq", diag_toggle_buffer,
+       {silent = true, nowait = true, desc = "Toggle diagnostics (current buffer)"})
+keyset("x", "<leader>hq", diag_toggle_buffer,
+       {silent = true, nowait = true, desc = "Toggle diagnostics (current buffer)"})
+
