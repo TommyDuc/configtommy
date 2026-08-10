@@ -63,6 +63,19 @@ require('mini.splitjoin').setup({
 	},
 })
 
+local sj = require('mini.splitjoin')
+local TRAILING_SEPARATOR_FILETYPES = { 'go', 'python' }
+
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = TRAILING_SEPARATOR_FILETYPES,
+	callback = function()
+		vim.b.minisplitjoin_config = {
+			split = { hooks_post = { sj.gen_hook.add_trailing_separator() } },
+			join = { hooks_post = { sj.gen_hook.del_trailing_separator() } },
+		}
+	end,
+})
+
 require('mini.surround').setup({
 	-- Add custom surroundings to be used on top of builtin ones. For more
 	-- information with examples, see `:h MiniSurround.config`.
