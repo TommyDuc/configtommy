@@ -16,6 +16,9 @@
 
 	"json.schemaDownload.enable": true,
 
+	// Resolve via PATH; useful for nix flakes
+	"go.goplsPath": "gopls",
+
     // "diagnostic.enable": false,
     // "pullDiagnostic.onChange": false,
     // "signature.enable": false,
