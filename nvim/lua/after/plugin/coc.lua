@@ -28,6 +28,20 @@ local opts = {silent = true, noremap = true, expr = true, replace_keycodes = fal
 keyset("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
 keyset("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
 
+-- gopls append a trailing comma to struct field completions,
+-- leaving the cursor before it. Skip over instead of inserting a duplicate.
+keyset("i", ",", function()
+    local column = vim.fn.col(".")
+    local line = vim.fn.getline(".")
+    if line:sub(column, column) ~= "," then
+        return ","
+    end
+    if line:sub(column + 1):match("^%s*$") then
+        return "<Right><CR>"
+    end
+    return "<Right>"
+end, {silent = true, noremap = true, expr = true, replace_keycodes = true})
+
 -- Make <CR> to accept selected completion item or notify coc.nvim to format
 -- <C-g>u breaks current undo, please make your own choice
 keyset("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
