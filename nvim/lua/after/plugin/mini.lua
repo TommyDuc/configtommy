@@ -30,6 +30,17 @@ require('mini.notify').setup()
 
 require('mini.tabline').setup()
 
+-- `nvim_buf_set_name` / `:file` (e.g. coc's `workspace.renameCurrentFile`,
+-- <leader>rf) updates the buffer name but doesn't mark the tabline dirty, so
+-- mini.tabline keeps rendering the old label until some unrelated redraw.
+vim.api.nvim_create_autocmd('BufFilePost', {
+	group = vim.api.nvim_create_augroup('TommyTablineRedraw', { clear = true }),
+	callback = function()
+		vim.schedule(function() vim.cmd('redrawtabline') end)
+	end,
+	desc = 'Redraw tabline after buffer rename',
+})
+
 require('mini.comment').setup()
 
 require('mini.jump').setup({
