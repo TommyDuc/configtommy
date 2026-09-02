@@ -13,6 +13,12 @@ CONFIGS=(
     zellij
 )
 
+# Hardcoded list of single config files to symlink.
+# Paths are relative to the repo; the target uses the file's basename.
+FILES=(
+    starship/starship.toml
+)
+
 DEST="${1:-$HOME/.config}"
 
 if [[ -n "${1:-}" && ! -d "$DEST" ]]; then
@@ -28,6 +34,14 @@ for cfg in "${CONFIGS[@]}"; do
     fi
 done
 
+for file in "${FILES[@]}"; do
+    src="$SCRIPT_DIR/$file"
+    if [[ ! -f "$src" ]]; then
+        echo "Error: source file '$src' not found in repo. Aborting." >&2
+        exit 1
+    fi
+done
+
 for cfg in "${CONFIGS[@]}"; do
     target="$DEST/$cfg"
     if [[ -e "$target" || -L "$target" ]]; then
@@ -36,6 +50,17 @@ for cfg in "${CONFIGS[@]}"; do
     fi
     ln -s "$SCRIPT_DIR/$cfg" "$target"
     echo "Linked $target -> $SCRIPT_DIR/$cfg"
+done
+
+for file in "${FILES[@]}"; do
+    src="$SCRIPT_DIR/$file"
+    target="$DEST/$(basename "$file")"
+    if [[ -e "$target" || -L "$target" ]]; then
+        echo "Warning: '$target' already exists. Skipping." >&2
+        continue
+    fi
+    ln -s "$src" "$target"
+    echo "Linked $target -> $src"
 done
 
 SKILLS_DEST="$HOME/.agents/skills"
