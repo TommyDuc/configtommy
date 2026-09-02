@@ -17,11 +17,18 @@ return {
 			desc = "Open file picker",
 		},
 		{
-		  "<leader>fg",
-		  function()
-			require("fff").find_in_git_root()
-		  end,
-		  desc = "Open git tracked file picker",
+			"<leader>fg",
+			function()
+				require("fff").find_in_git_root()
+			end,
+			desc = "Open git tracked file picker",
+		},
+		{
+			"<leader>fs",
+			function()
+				require("fff").live_grep()
+			end,
+			desc = "Live grep",
 		},
 	},
 }
