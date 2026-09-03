@@ -77,6 +77,123 @@ end
 keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
 
 
+-- Yank the type of the symbol under the cursor (the one K shows) into a register.
+-- The LSP only hands back rendered markdown, so pulling out "just the type" is a
+-- per-language heuristic; see extract_type below. When it can't tell, nothing is
+-- yanked rather than yanking something wrong.
+
+-- Contents of the first fenced code block, else the first non-empty line.
+local function hover_code_block(chunks)
+    local out, inside, first_line = {}, false, nil
+    for _, chunk in ipairs(chunks) do
+        -- Each chunk may itself span several lines.
+        for line in (chunk .. "\n"):gmatch("([^\n]*)\n") do
+            if line:match("^%s*```") then
+                if inside then return out end
+                inside = true
+            elseif inside then
+                table.insert(out, line)
+            elseif first_line == nil and line:match("%S") then
+                first_line = line
+            end
+        end
+    end
+    if #out > 0 then return out end
+    if first_line then return {first_line} end
+    return {}
+end
+
+-- Index of the first ':' at bracket depth 0, so generics and parameter lists
+-- (`Map<string, number>`, `fn(a: int)`) aren't mistaken for a type ascription.
+local function top_level_colon(s)
+    local depth = 0
+    for i = 1, #s do
+        local c = s:sub(i, i)
+        if c:match("[%(%[{<]") then
+            depth = depth + 1
+        elseif c:match("[%)%]}>]") then
+            depth = depth - 1
+        elseif c == ":" and depth <= 0 then
+            return i
+        end
+    end
+    return nil
+end
+
+local function trim(s)
+    return (s:gsub("^%s+", ""):gsub("%s+$", ""))
+end
+
+local function extract_type(lines)
+    if #lines == 0 then return nil end
+
+    local head = trim(lines[1])
+    -- Drop tsserver/pyright style qualifiers: "(variable) x: string"
+    head = head:gsub("^%b()%s*", "")
+    -- Drop a leading declaration keyword: "var x string", "let x: String".
+    -- Only these words, so a "func Foo(...)" signature is left intact.
+    head = head:gsub("^[%w_]+%s+", function(kw)
+        local word = kw:match("^[%w_]+")
+        if word == "var" or word == "let" or word == "const"
+            or word == "val" or word == "field" or word == "type" then
+            return ""
+        end
+        return kw
+    end)
+
+    local colon = top_level_colon(head)
+    local result
+    if colon then
+        result = trim(head:sub(colon + 1))
+    else
+        -- Go/gopls form: "x string", "s []byte"
+        result = head:match("^[%w_%.]+%s+(.+)$")
+    end
+    if not result then return nil end
+
+    -- Keep the rest of the block, for multi-line struct/interface types.
+    if #lines > 1 then
+        local rest = {result}
+        for i = 2, #lines do
+            table.insert(rest, lines[i])
+        end
+        result = table.concat(rest, "\n")
+    end
+
+    result = trim(result)
+    if result == "" or result == "unknown" then return nil end
+    return result
+end
+
+local function yank_type()
+    -- Captured now: v:register is only valid for the pending mapping.
+    local register = vim.v.register
+    vim.fn.CocActionAsync("getHover", function(err, hover)
+        if err ~= nil and err ~= vim.NIL then
+            vim.notify("Type yank: " .. tostring(err), vim.log.levels.WARN)
+            return
+        end
+        if hover == vim.NIL or type(hover) ~= "table" or #hover == 0 then
+            vim.notify("Type yank: no hover information", vim.log.levels.WARN)
+            return
+        end
+        local type_text = extract_type(hover_code_block(hover))
+        if not type_text then
+            vim.notify("Type yank: could not determine type", vim.log.levels.WARN)
+            return
+        end
+        vim.fn.setreg(register, type_text, "c")
+        -- A plain yank fills "0 as well; mirror that for the unnamed register.
+        if register == '"' then
+            vim.fn.setreg("0", type_text, "c")
+        end
+        vim.notify("Yanked type: " .. type_text)
+    end)
+end
+
+keyset("n", "gK", yank_type, {silent = true, desc = "Yank type under cursor"})
+
+
 -- Highlight the symbol and its references on a CursorHold event(cursor is idle)
 vim.api.nvim_create_augroup("CocGroup", {})
 vim.api.nvim_create_autocmd("CursorHold", {
