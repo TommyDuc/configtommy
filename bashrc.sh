@@ -82,6 +82,7 @@ eval "$(starship init bash)"
 # just
 eval "$(just --completions bash)"
 alias j='just'
+complete -o nospace -o bashdefault -o nosort -F _clap_complete_just j
 
 # misc
 alias batp="\$HOME/.cargo/bin/bat --force-colorization --theme dark --paging always"
