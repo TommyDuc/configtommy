@@ -57,6 +57,9 @@ alias tree="tree --gitignore -a -I '.git'"
 # Include everyting. Let the bodies hit the floor. Let the bodies hit the floor. That's how I roll now.
 alias atree="tree -a"
 
+# ripgrep
+alias rga="rg --no-ignore --no-ignore-dot"
+
 # zellij
 alias z="zellij"
 
