@@ -25,10 +25,10 @@ PATH="$HOME/go/bin:$PATH"
 PATH="$HOME/.local/bin:$PATH"
 
 # pyenv
-PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+PYENV_BIN="$HOME/bin/pyenv/bin"   # pyenv program lives here (PYENV_ROOT is data only)
+[[ ":$PATH:" == *":$PYENV_BIN:"* ]] || PATH="$PYENV_BIN:$PATH"
+command -v pyenv >/dev/null && eval "$(pyenv init -)"
 . "$HOME/.cargo/env"
 
 # git
