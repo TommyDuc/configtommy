@@ -6,8 +6,3 @@ vim.keymap.set('n', '<leader>fl',
 		builtin.live_grep({prompt_title = 'Live Grep', grep_open_files = true})
 	end
 )
-vim.keymap.set('n', '<leader>fs',
-	function()
-		builtin.grep_string({ search=vim.fn.input("Grep: ") })
-	end
-)

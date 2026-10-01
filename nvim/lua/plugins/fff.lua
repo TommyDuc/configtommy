@@ -30,5 +30,12 @@ return {
 			end,
 			desc = "Live grep",
 		},
+		{
+			"<leader>fr",
+			function()
+				require("fff").live_grep({ resume = true })
+			end,
+			desc = "Resume last live grep",
+		},
 	},
 }
