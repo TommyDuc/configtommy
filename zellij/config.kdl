@@ -296,6 +296,14 @@ theme_dir "/home/tommy/.config/zellij/themes"
 //
    mouse_mode true
 
+// Automatically enter Scroll mode when scrolling up in the focused pane
+// (new in 0.45.0, opt-out added in 0.45.1)
+// Options:
+//   - true (default)
+//   - false
+//
+   scroll_mode_sync false
+
 // Toggle having pane frames around the panes
 // Options:
 //   - true (default, enabled)
