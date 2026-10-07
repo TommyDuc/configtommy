@@ -40,6 +40,7 @@ vim.keymap.set("x", "<leader>pF", function()
 end, {desc = 'Yank file path:line1-line2 to clipboard'})
 vim.keymap.set("n", "<leader>o", ':put _<cr>', {desc = "'o' without insert mode"})
 vim.keymap.set("n", "<leader>O", '-:put _<cr>', {desc = "'O' without insert mode"})
+vim.keymap.set("n", "gJ", 'i<CR><Esc>', {desc = "Split line at cursor (reverse of J)"})
 
 -- Insert N characters and auto-return to normal mode
 local function insert_n_chars(count)
