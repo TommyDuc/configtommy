@@ -97,6 +97,15 @@ export PATH=/home/tommy/.opencode/bin:$PATH
 alias oc="opencode --agent plan" # Always start in agent mode
 alias occ="oc -c" # Continue from last sessiion
 
+# meld
+meldiff() {
+    if [[ -z $1 ]]; then
+        echo "usage: meldiff <ref>" >& 2
+        return 1
+    fi
+    git difftool -t meld -d "$1~1" "$1" || return 1
+}
+
 # nodejs
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
