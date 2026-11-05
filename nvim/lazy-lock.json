@@ -4,7 +4,7 @@
   "coerce.nvim": { "branch": "main", "commit": "b7927c42bd7f3adaae5f5dcf86a89140d5d80430" },
   "coop.nvim": { "branch": "main", "commit": "26df3be54846ed44b5a9d7749f7780049931b8a8" },
   "fff": { "branch": "main", "commit": "b3b8cede0beb95272ebc2c72c648269f9c5228b3" },
-  "gitlinker.nvim": { "branch": "master", "commit": "a1b74070bbd5e50128190c85b09f1431ea5fbd83" },
+  "gitlinker.nvim": { "branch": "master", "commit": "b710fe0e0c997236104f43db49905ab67f8d1f64" },
   "graph_view_yaml_parser": { "branch": "master", "commit": "ecc5ba0a0b8c3a6eb3e7fa5a2caeeee2263729c3" },
   "hop.nvim": { "branch": "master", "commit": "08ddca799089ab96a6d1763db0b8adc5320bf050" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
